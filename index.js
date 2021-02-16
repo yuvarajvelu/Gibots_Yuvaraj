@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express()
-const Student = require('./models/student')
+const Student = require('./models/student') //Schema for Student Data
 
 const data = [
     { 
@@ -24,27 +24,24 @@ const data = [
         Marks:120 
     }
 ] 
-
+/* saving data to mongodb */
 data.forEach(async (d) => {
     await Student.deleteMany()
     const student = new Student(d);
-    student.save().then(() => console.log('Student data saved'))
+    student.save().then(() => console.log('Student data saved')) //saving each individual student data to mongodb
 })
 
-app.get("/",async (req,res) => {
-    const students = await Student.find({})
-    res.json(students)
-})
-
-app.get("/sort", async (req, res) => {
-    const students = await Student.find({})
-    const sortedStudentAge = students.sort((a,b) => a.Age - b.Age)
+/* sortinfg the data in ascending order*/
+app.get("/sort", async (_req, res) => {
+    const students = await Student.find({}) //Get every student data from database
+    const sortedStudentAge = students.sort((a,b) => a.Age - b.Age) //Sorting the data in ascending order
     res.json(sortedStudentAge);
 })
 
-app.get("/sum", async (req, res) => {
+/* Finding sum of marks */
+app.get("/sum", async (_req, res) => {
     const students = await Student.find({})
-    const total = students.reduce((sum, s) => sum + s.Marks,0)
+    const total = students.reduce((sum, s) => sum + s.Marks,0) //Calculating the summ
     res.send(`Sum of marks by students is ${total}`)
 })
 
