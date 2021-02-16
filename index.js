@@ -26,7 +26,6 @@ const data = [
 ] 
 /* saving data to mongodb */
 data.forEach(async (d) => {
-    await Student.deleteMany()
     const student = new Student(d);
     student.save().then(() => console.log('Student data saved')) //saving each individual student data to mongodb
 })
